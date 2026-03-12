@@ -15,11 +15,15 @@ export const goodsFromServer: string[] = [
   'Garlic',
 ];
 
-type SortType = '' | 'alphabetical' | 'length';
+enum SortType {
+  None = '',
+  Alphabetical = 'alphabetical',
+  Length = 'length',
+}
 
 export const App: React.FC = () => {
   const [visibleGoods, setVisibleGoods] = useState<string[]>(goodsFromServer);
-  const [activeSort, setActiveSort] = useState<SortType>('');
+  const [activeSort, setActiveSort] = useState<SortType>(SortType.None);
   const [isReversed, setIsReversed] = useState<boolean>(false);
 
   const sortByAlphabetically = (): void => {
@@ -30,7 +34,7 @@ export const App: React.FC = () => {
     }
 
     setVisibleGoods(sortedList);
-    setActiveSort('alphabetical');
+    setActiveSort(SortType.Alphabetical);
   };
 
   const sortByLength = (): void => {
@@ -43,33 +47,31 @@ export const App: React.FC = () => {
     }
 
     setVisibleGoods(sortedLength);
-    setActiveSort('length');
+    setActiveSort(SortType.Length);
   };
 
   const toggleReverse = (): void => {
     const newReversedState = !isReversed;
-
     setIsReversed(newReversedState);
 
     const reversedList = [...visibleGoods].reverse();
-
     setVisibleGoods(reversedList);
   };
 
   const handleReset = (): void => {
     setVisibleGoods(goodsFromServer);
-    setActiveSort('');
+    setActiveSort(SortType.None);
     setIsReversed(false);
   };
 
-  const isResetVisible: boolean = activeSort !== '' || isReversed;
+  const isResetVisible: boolean = activeSort !== SortType.None || isReversed;
 
   return (
     <div className="section content">
       <div className="buttons">
         <button
           type="button"
-          className={`button is-info ${activeSort !== 'alphabetical' ? 'is-light' : ''}`}
+          className={`button is-info ${activeSort !== SortType.Alphabetical ? 'is-light' : ''}`}
           onClick={sortByAlphabetically}
         >
           Sort alphabetically
@@ -77,7 +79,7 @@ export const App: React.FC = () => {
 
         <button
           type="button"
-          className={`button is-success ${activeSort !== 'length' ? 'is-light' : ''}`}
+          className={`button is-success ${activeSort !== SortType.Length ? 'is-light' : ''}`}
           onClick={sortByLength}
         >
           Sort by length
