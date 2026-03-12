@@ -52,9 +52,11 @@ export const App: React.FC = () => {
 
   const toggleReverse = (): void => {
     const newReversedState = !isReversed;
+
     setIsReversed(newReversedState);
 
     const reversedList = [...visibleGoods].reverse();
+
     setVisibleGoods(reversedList);
   };
 
